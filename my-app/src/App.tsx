@@ -18,7 +18,6 @@ function App() {
         //функция которая будет менять фильтр
         setFilter(value)
     }
-
     function addTask(title: string) {
         //функция добавления нового дела
         let newTask: TaskType = {
@@ -30,7 +29,6 @@ function App() {
         let newTasks: Array<TaskType> = [newTask, ...tasks] //новый массив всез дел с новым делом
         setTasks(newTasks) //отрисовываем новый массив
     }
-
     function deleteTask(id: string) {
         let filteredTasks = tasks.filter(task => id !== task.id)// если это не то дело которое нужно удалить то вернется true и оно не удалится
         setTasks(filteredTasks)

@@ -15,7 +15,7 @@ type PropsType = {
     deleteTask: (id: string) => void
     changeFilter: (value: FilterValuesType) => void
     addTask: (taskTitle: string) => void
-    changeCheckBoxStatus: (id: string ,isDone: boolean) => void
+    changeCheckBoxStatus: (id: string, isDone: boolean) => void
 }
 
 export function Todolist(props: PropsType) {
@@ -33,7 +33,13 @@ export function Todolist(props: PropsType) {
         }
     }
     const addTask = () => {
-        props.addTask(newTaskTitle)
+        if (newTaskTitle.trim() === '') {
+            //если мы пытаемся добавить дело которое состоит из пустой строки то будет выход из фкнцкии
+            //.trim() обрежет все пробелы потому если этого не сделать пользователь может напечатать много пробелов
+            // и выхода из функции не будет
+            return
+        }
+        props.addTask(newTaskTitle.trim())
         setNewTaskTitle('') //очищаем инпут
     }
     const onAllClickHandler = () => {
@@ -65,8 +71,8 @@ export function Todolist(props: PropsType) {
                         const onDeleteHandler = () => {
                             props.deleteTask(task.id)
                         }//функция которая удаляет дело
-                        const onChangeCheckBoxHandler = (event:ChangeEvent<HTMLInputElement>) => {
-                            props.changeCheckBoxStatus(task.id , event.target.checked)
+                        const onChangeCheckBoxHandler = (event: ChangeEvent<HTMLInputElement>) => {
+                            props.changeCheckBoxStatus(task.id, event.target.checked)
                         }//функция которая менеят статус чекбокса
 
                         return <li key={task.id}>
