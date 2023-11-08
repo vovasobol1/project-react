@@ -62,13 +62,14 @@ export function Todolist(props: PropsType) {
                     // в пропсах приходит массив обьектов props.tasks (в нем лежат все дела ) с помощью map
                     // отрисовываем каждый жлемент этого массива
                     props.tasks.map((task) => {
+                        const onDeleteHandler = () => {
+                            props.deleteTask(task.id)
+                        }
+
                         return <li key={task.id}>
                             <input type="checkbox" checked={task.isDone}/>
                             <span>{task.title}</span>
-                            <button onClick={() => {
-                                props.deleteTask(task.id)
-                            }}>X
-                            </button>
+                            <button onClick={onDeleteHandler}>X</button>
                         </li>
                     })
                 }
