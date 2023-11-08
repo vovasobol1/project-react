@@ -15,7 +15,7 @@ type PropsType = {
     tasks: Array<TaskType> //мы ждем на вход массив состоящий из обьектов TaskType
     deleteTask: (id: string) => void
     changeFilter: (value: FilterValuesType) => void
-    addTask: (taskTitle:string ) => void
+    addTask: (taskTitle: string) => void
 }
 
 export function Todolist(props: PropsType) {
@@ -24,10 +24,17 @@ export function Todolist(props: PropsType) {
         <div>
             <h3>{props.title}</h3>
             <div>
-                <input value={newTaskTitle} onChange={(event) => {
-                    setNewTaskTitle(event.currentTarget.value)
-                    }
-                }/>
+                <input value={newTaskTitle}
+                       onChange={(event) => {
+                           setNewTaskTitle(event.currentTarget.value)
+                       }}
+                       onKeyPress={(event)=>{
+                            if (event.code === 'Enter') {
+                                props.addTask(newTaskTitle)
+                                setNewTaskTitle('') //очищаем инпут
+                            }
+                       }}
+                />
                 <button onClick={() => {
                     props.addTask(newTaskTitle)
                     setNewTaskTitle('') //очищаем инпут
