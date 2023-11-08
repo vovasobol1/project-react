@@ -1,17 +1,20 @@
 import React from "react";
+import {Simulate} from "react-dom/test-utils";
+import click = Simulate.click;
 
 export type TaskType = {
-    id : number
-    title : string
-    isDone : boolean
+    id: number
+    title: string
+    isDone: boolean
 }
 
 type PropsType = {
-    title : string
-    tasks : Array<TaskType> //мы ждем на вход массив состоящий из обьектов TaskType
+    title: string
+    tasks: Array<TaskType> //мы ждем на вход массив состоящий из обьектов TaskType
+    deleteTask : Function
 }
 
-export function Todolist(props : PropsType ) {
+export function Todolist(props: PropsType) {
     return (
         <div>
             <h3>{props.title}</h3>
@@ -20,9 +23,17 @@ export function Todolist(props : PropsType ) {
                 <button>+</button>
             </div>
             <ul>
-                <li><input type="checkbox" checked={props.tasks[0].isDone}/><span>{props.tasks[0].title}</span></li>
-                <li><input type="checkbox" checked={props.tasks[1].isDone}/><span>{props.tasks[1].title}</span></li>
-                <li><input type="checkbox" checked={props.tasks[2].isDone}/><span>{props.tasks[2].title}</span></li>
+                {
+                    // в пропсах приходит массив обьектов props.tasks (в нем лежат все дела ) с помощью map
+                    // отрисовываем каждый жлемент этого массива
+                    props.tasks.map((task) => {
+                        return <li>
+                            <input type="checkbox" checked={task.isDone}/>
+                            <span>{task.title}</span>
+                            <button onClick={ () => { props.deleteTask(task.id)} }>X</button>
+                        </li>
+                    })
+                }
             </ul>
             <div>
                 <button>all</button>
