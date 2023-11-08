@@ -30,6 +30,7 @@ export function Todolist(props: PropsType) {
                 }/>
                 <button onClick={() => {
                     props.addTask(newTaskTitle)
+                    setNewTaskTitle('') //очищаем инпут
                 }}>+
                 </button>
             </div>
