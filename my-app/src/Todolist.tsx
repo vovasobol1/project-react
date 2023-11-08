@@ -17,7 +17,7 @@ type PropsType = {
     changeFilter: (value: FilterValuesType) => void
     addTask: (taskTitle: string) => void
     changeCheckBoxStatus: (id: string, isDone: boolean) => void
-    filter:FilterValuesType
+    filter: FilterValuesType
 }
 
 export function Todolist(props: PropsType) {
@@ -82,21 +82,26 @@ export function Todolist(props: PropsType) {
                             props.changeCheckBoxStatus(task.id, event.target.checked)
                         }//функция которая менеят статус чекбокса
 
-                        return <li key={task.id}>
-                            <input type="checkbox" onChange={onChangeCheckBoxHandler} checked={task.isDone}/>
-                            <span>{task.title}</span>
-                            <button onClick={onDeleteHandler}>X</button>
-                        </li>
+                        return (
+                            <li key={task.id} className={task.isDone === true ? "task-Is-Done" : ""}>
+                                <input type="checkbox" onChange={onChangeCheckBoxHandler} checked={task.isDone}/>
+                                <span>{task.title}</span>
+                                <button onClick={onDeleteHandler}>X</button>
+                            </li>
+                        )
                     })
                 }
             </ul>
             <div>
-                <button className={props.filter === "all" ? "active-fiter" : "" }
-                        onClick={onAllClickHandler}>all</button>
-                <button className={props.filter === "active" ? "active-fiter": "" }
-                        onClick={onActiveClickHandler}>active</button>
+                <button className={props.filter === "all" ? "active-fiter" : ""}
+                        onClick={onAllClickHandler}>all
+                </button>
+                <button className={props.filter === "active" ? "active-fiter" : ""}
+                        onClick={onActiveClickHandler}>active
+                </button>
                 <button className={props.filter === "completed" ? "active-fiter" : ""}
-                        onClick={onCompletedHandler}>completed</button>
+                        onClick={onCompletedHandler}>completed
+                </button>
             </div>
         </div>
     )
