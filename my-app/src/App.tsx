@@ -64,6 +64,7 @@ function App() {
                 changeFilter={changeFilter} //передаем функцию которая менеят фильтры
                 addTask={addTask} // передаем фунцкию которая добавляет новое дело
                 changeCheckBoxStatus={changeCheckBoxStatus} //передаем фунцкию которая которая меняет статус чекбокса
+                filter={filter}
             />
 
         </div>
