@@ -18,6 +18,18 @@ export type FilterValuesType = 'all' | 'completed' |'active'  //тип знач�
         //функция которая будет менять фильтр
         setFilter(value)
     }
+
+    function addTask(title : string){
+        //функция добавления нового дела
+        let newTask :TaskType = {
+            id : v1() ,
+            title : title,
+            isDone : false
+        }
+
+        let newTasks :Array<TaskType> = [ newTask , ...tasks] //новый массив всез дел с новым делом
+        setTasks(newTasks) //отрисовываем новый массив
+    }
     function deleteTask(id: string) {
         let filteredTasks = tasks.filter(task => id !== task.id)// если это не то дело которое нужно удалить то вернется true и оно не удалится
         setTasks(filteredTasks)
@@ -39,6 +51,7 @@ export type FilterValuesType = 'all' | 'completed' |'active'  //тип знач�
                 tasks={TasksForTodolist}         //передаем массив дел
                 deleteTask={deleteTask} //передаем функцию удаления одного дела
                 changeFilter={changeFilter} //передаем функцию которая менеят фильтры
+                addTask={addTask} // передаем фунцкию которая добавляет новое дело
             />
         </div>
     );
