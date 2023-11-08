@@ -2,6 +2,7 @@ import React, {ChangeEvent, ChangeEventHandler, KeyboardEventHandler, useState} 
 import {Simulate} from "react-dom/test-utils";
 import click = Simulate.click;
 import {FilterValuesType} from "./App";
+import error = Simulate.error;
 
 
 export type TaskType = {
@@ -20,9 +21,11 @@ type PropsType = {
 
 export function Todolist(props: PropsType) {
     const [newTaskTitle, setNewTaskTitle] = useState('')
+    const [error, setError] = useState<string | null>(null)
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        //убираем сообщение об ошибке
+        setError(null)
         //фунцкия которая вызывается при нажатии изменениии инпута
-        console.log('изменение в инпуте')
         setNewTaskTitle(event.currentTarget.value)
     }
     //тут не должен стоять тип any (надо потом исправить)
@@ -37,6 +40,7 @@ export function Todolist(props: PropsType) {
             //если мы пытаемся добавить дело которое состоит из пустой строки то будет выход из фкнцкии
             //.trim() обрежет все пробелы потому если этого не сделать пользователь может напечатать много пробелов
             // и выхода из функции не будет
+            setError("это поле обязательно")
             return
         }
         props.addTask(newTaskTitle.trim())
@@ -60,8 +64,10 @@ export function Todolist(props: PropsType) {
                 <input value={newTaskTitle}
                        onChange={onChangeHandler}
                        onKeyPress={onKeyPressHandler}
+                       className={error ? "error" : ""} //если в error не пустая строка то присвоится класс ошибка
                 />
                 <button onClick={addTask}>+</button>
+                {error && <div className={'error-massage'}>{error}</div>}
             </div>
             <ul>
                 {
