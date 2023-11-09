@@ -11,10 +11,11 @@ export type TaskType = {
     isDone: boolean
 }
 type PropsType = {
+    id:string
     title: string
     tasks: Array<TaskType> //мы ждем на вход массив состоящий из обьектов TaskType
     deleteTask: (id: string) => void
-    changeFilter: (value: FilterValuesType) => void
+    changeFilter: (value: FilterValuesType , todoListId : string) => void
     addTask: (taskTitle: string) => void
     changeCheckBoxStatus: (id: string, isDone: boolean) => void
     filter: FilterValuesType
@@ -49,13 +50,13 @@ export function Todolist(props: PropsType) {
         setNewTaskTitle('') //очищаем инпут
     }
     const onAllClickHandler = () => {
-        props.changeFilter('all')
+        props.changeFilter('all', props.id )
     }
     const onActiveClickHandler = () => {
-        props.changeFilter('active')
+        props.changeFilter('active', props.id)
     }
     const onCompletedHandler = () => {
-        props.changeFilter('completed')
+        props.changeFilter('completed', props.id)
     }
 
     return (
