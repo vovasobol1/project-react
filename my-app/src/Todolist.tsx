@@ -23,14 +23,15 @@ type PropsType = {
 export function Todolist(props: PropsType) {
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
+
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         //убираем сообщение об ошибке
         setError(null)
         //фунцкия которая вызывается при нажатии изменениии инпута
         setNewTaskTitle(event.currentTarget.value)
     }
-    //тут не должен стоять тип any (надо потом исправить)
     const onKeyPressHandler = (event: any) => {
+        //тут не должен стоять тип any (надо потом исправить)
         if (event.code === 'Enter') {
             props.addTask(newTaskTitle)
             setNewTaskTitle('') //очищаем инпут
@@ -56,7 +57,6 @@ export function Todolist(props: PropsType) {
     const onCompletedHandler = () => {
         props.changeFilter('completed')
     }
-
 
     return (
         <div>

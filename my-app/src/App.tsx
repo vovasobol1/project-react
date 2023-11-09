@@ -4,14 +4,23 @@ import {TaskType, Todolist} from "./Todolist";
 import {v1} from "uuid";
 
 export type FilterValuesType = 'all' | 'completed' | 'active'  //тип значений для фильтрации чтобы в качестве фильтра не была любая строка
+type todoListType = {
+    id : string
+    title:string
+    filter : FilterValuesType
+}
 
 function App() {
 
+    //локальный state в котором хранятся все дела в виде обьектов
+    //когда вызывается фунцкия setTasks с новым массивом tasks state обновится и
+    //компонента перересуется
     let [tasks, setTasks] = useState<Array<TaskType>>([
         {id: v1(), title: 'css', isDone: true},
         {id: v1(), title: 'js', isDone: true},
         {id: v1(), title: 'react', isDone: false}
     ])
+    //локальный state в которм хранится фильтр для каждого туду листа
     let [filter, setFilter] = useState<FilterValuesType>("all")
 
     function changeFilter(value: FilterValuesType) {
@@ -55,18 +64,31 @@ function App() {
         TasksForTodolist = tasks.filter(task => task.isDone === false)
     }
 
+
+    let todoLists:Array<todoListType> = [
+        {id:v1() , title : "what to learn" , filter: 'active'} ,
+        {id:v1() , title : "films" , filter: 'all'} ,
+    ]
+
     return (
         <div className="App">
-            <Todolist
-                title="what to learn" //передаем заголовок туду листа
-                tasks={TasksForTodolist}         //передаем массив дел
-                deleteTask={deleteTask} //передаем функцию удаления одного дела
-                changeFilter={changeFilter} //передаем функцию которая менеят фильтры
-                addTask={addTask} // передаем фунцкию которая добавляет новое дело
-                changeCheckBoxStatus={changeCheckBoxStatus} //передаем фунцкию которая которая меняет статус чекбокса
-                filter={filter}
-            />
+            {
 
+                todoLists.map(todoList=>{
+                    return (
+                        <Todolist
+                            title= {todoList.title} //передаем заголовок туду листа
+                            tasks={TasksForTodolist}         //передаем массив дел
+                            deleteTask={deleteTask} //передаем функцию удаления одного дела
+                            changeFilter={changeFilter} //передаем функцию которая менеят фильтры
+                            addTask={addTask} // передаем фунцкию которая добавляет новое дело
+                            changeCheckBoxStatus={changeCheckBoxStatus} //передаем фунцкию которая которая меняет статус чекбокса
+                            filter={todoList.filter}
+                        />
+                    )
+                })
+
+            }
         </div>
     );
 }
