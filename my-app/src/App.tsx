@@ -16,7 +16,6 @@ function App() {
 
         // находим по айди тудулист который будем менять
         let findetTodoList = todoLists.find(todoList => todoList.id === todoListId)
-        console.log(findetTodoList)
         //если тудулист нашелся то меняем фильтр и перерисовываем
         if (findetTodoList){
             findetTodoList.filter = value
@@ -25,6 +24,8 @@ function App() {
     }
 
     function addTask(title: string , todoListId : string) {
+        let tasks = tasksObj[todoListId] // достаем все дела конкретного тудулиста (обратимся к нему поо айди)
+
         //функция добавления нового дела
         let newTask: TaskType = {
             id: v1(),
@@ -32,27 +33,31 @@ function App() {
             isDone: false
         }
 
-        let newTasks: Array<TaskType> = [newTask, ...tasks[todoListId]] //новый массив всез дел с новым делом
+        let newTasks: Array<TaskType> = [newTask, ...tasks] //новый массив всех дел с новым делом
 
-        tasks[todoListId] = newTasks
-        setTasks({...tasks}) //отрисовываем новый обьект
+        tasks = newTasks
+        setTasks({...tasksObj}) //отрисовываем новый обьект
     }
 
     function deleteTask(id: string , todoListId : string ) {
+        let tasks = tasksObj[todoListId] // достаем все дела конкретного тудулиста (обратимся к нему поо айди)
 
-        let filteredTasks = tasks[todoListId].filter(task => id !== task.id)// если это не то дело которое нужно удалить то вернется true и оно не удалится
-        tasks[todoListId] = filteredTasks
-        setTasks({...tasks})//отдаем копию обьекта иначе реакт ничего не перерисовывает
+
+        let filteredTasks = tasks.filter(task => id !== task.id)// если это не то дело которое нужно удалить то вернется true и оно не удалится
+        tasks = filteredTasks
+        setTasks({...tasksObj})//отдаем копию обьекта иначе реакт ничего не перерисовывает
     }
 
     const changeCheckBoxStatus = (taskId: string, isDone: boolean , todoListId : string) => {
+        let tasks = tasksObj[todoListId] // достаем все дела конкретного тудулиста (обратимся к нему поо айди)
+
         //функция которая меняет статус чекбокса
-        let foundTask = tasks[todoListId].find(task => task.id === taskId) //находим таску и записываем найденную таску в переменную foundTask
+        let foundTask = tasks.find(task => task.id === taskId) //находим таску и записываем найденную таску в переменную foundTask
         //если нашлось дело с таким id и там не лежит undefined тогда менеям на противоположное
         if (foundTask !== undefined) {
             foundTask.isDone = isDone //менеям на значение которое пришло в параметр функции
-            tasks[taskId] = []
-            setTasks({...tasks}) //отрисовываем новый массив
+            tasks = []
+            setTasks({...tasksObj}) //отрисовываем новый массив
         }
 
     }
@@ -65,7 +70,7 @@ function App() {
         {id: todoListId2, title: "films", filter: 'all'},
     ])
 
-    const [tasks, setTasks] = useState({
+    const [tasksObj, setTasks] = useState({
         [todoListId1]:[
             {id:v1() , title:'js' , isDone:true} ,
             {id:v1() , title:'html' , isDone:true} ,
@@ -85,7 +90,7 @@ function App() {
 
                 todoLists.map(todoList => {
                     //тут происходит фильтрация
-                    let TasksForTodolist = tasks[todoList.id]
+                    let TasksForTodolist = tasksObj[todoList.id]
 
                     if (todoList.filter === 'completed') {
                         TasksForTodolist = TasksForTodolist.filter(task => task.isDone === true)
