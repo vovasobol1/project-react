@@ -11,16 +11,6 @@ type todoListType = {
 }
 
 function App() {
-
-    //локальный state в котором хранятся все дела в виде обьектов
-    //когда вызывается фунцкия setTasks с новым массивом tasks state обновится и
-    //компонента перересуется
-    let [tasks, setTasks] = useState<Array<TaskType>>([
-        {id: v1(), title: 'css', isDone: true},
-        {id: v1(), title: 'js', isDone: true},
-        {id: v1(), title: 'react', isDone: false}
-    ])
-
     function changeFilter(value: FilterValuesType, todoListId: string) {
         //функция которая будет менять фильтр
 
@@ -34,8 +24,7 @@ function App() {
         }
     }
 
-
-    function addTask(title: string) {
+    function addTask(title: string , todoListId : string) {
         //функция добавления нового дела
         let newTask: TaskType = {
             id: v1(),
@@ -43,46 +32,66 @@ function App() {
             isDone: false
         }
 
-        let newTasks: Array<TaskType> = [newTask, ...tasks] //новый массив всез дел с новым делом
-        setTasks(newTasks) //отрисовываем новый массив
+        let newTasks: Array<TaskType> = [newTask, ...tasks[todoListId]] //новый массив всез дел с новым делом
+
+        tasks[todoListId] = newTasks
+        setTasks({...tasks}) //отрисовываем новый обьект
     }
 
-    function deleteTask(id: string) {
-        let filteredTasks = tasks.filter(task => id !== task.id)// если это не то дело которое нужно удалить то вернется true и оно не удалится
-        setTasks(filteredTasks)
+    function deleteTask(id: string , todoListId : string ) {
+
+        let filteredTasks = tasks[todoListId].filter(task => id !== task.id)// если это не то дело которое нужно удалить то вернется true и оно не удалится
+        tasks[todoListId] = filteredTasks
+        setTasks({...tasks})//отдаем копию обьекта иначе реакт ничего не перерисовывает
     }
 
-    const changeCheckBoxStatus = (taskId: string, isDone: boolean) => {
+    const changeCheckBoxStatus = (taskId: string, isDone: boolean , todoListId : string) => {
         //функция которая меняет статус чекбокса
-        let foundTask = tasks.find(task => task.id === taskId) //находим таску и записываем найденную таску в переменную foundTask
+        let foundTask = tasks[todoListId].find(task => task.id === taskId) //находим таску и записываем найденную таску в переменную foundTask
         //если нашлось дело с таким id и там не лежит undefined тогда менеям на противоположное
         if (foundTask !== undefined) {
             foundTask.isDone = isDone //менеям на значение которое пришло в параметр функции
-
-            let copyTasks = [...tasks] //создали точно такой же массив чтобы реакт понял что в массиве произошли ищзменения иначе он не отрисует
-            console.log(tasks)
-            setTasks(copyTasks) //отрисовываем новый массив
+            tasks[taskId] = []
+            setTasks({...tasks}) //отрисовываем новый массив
         }
 
     }
 
+    let todoListId1 = v1()
+    let todoListId2 = v1()
+
     const [todoLists, setTodoLists] = useState<Array<todoListType>>([
-        {id: v1(), title: "what to learn", filter: 'active'},
-        {id: v1(), title: "films", filter: 'all'},
+        {id: todoListId1, title: "what to learn", filter: 'active'},
+        {id: todoListId2, title: "films", filter: 'all'},
     ])
 
+    const [tasks, setTasks] = useState({
+        [todoListId1]:[
+            {id:v1() , title:'js' , isDone:true} ,
+            {id:v1() , title:'html' , isDone:true} ,
+            {id:v1() , title:'vscode' , isDone:true} ,
+            {id:v1() , title:'react' , isDone:false}
+        ] ,
+        [todoListId2]:[
+            {id:v1() , title:'астрал' , isDone:true} ,
+            {id:v1() , title:'оно' , isDone:true} ,
+            {id:v1() , title:'терминатор' , isDone:false}
+        ]
+
+    })
     return (
         <div className="App">
             {
 
                 todoLists.map(todoList => {
                     //тут происходит фильтрация
-                    let TasksForTodolist = tasks
+                    let TasksForTodolist = tasks[todoList.id]
+
                     if (todoList.filter === 'completed') {
-                        TasksForTodolist = tasks.filter(task => task.isDone === true)
+                        TasksForTodolist = TasksForTodolist.filter(task => task.isDone === true)
                     }
                     if (todoList.filter === 'active') {
-                        TasksForTodolist = tasks.filter(task => task.isDone === false)
+                        TasksForTodolist = TasksForTodolist.filter(task => task.isDone === false)
                     }
                     return (
                         <Todolist

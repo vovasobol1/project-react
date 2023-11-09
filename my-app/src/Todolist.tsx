@@ -14,10 +14,10 @@ type PropsType = {
     id:string
     title: string
     tasks: Array<TaskType> //мы ждем на вход массив состоящий из обьектов TaskType
-    deleteTask: (id: string) => void
+    deleteTask: (id: string , todoListId : string) => void
     changeFilter: (value: FilterValuesType , todoListId : string) => void
-    addTask: (taskTitle: string) => void
-    changeCheckBoxStatus: (id: string, isDone: boolean) => void
+    addTask: (taskTitle: string , todoListId : string ) => void
+    changeCheckBoxStatus: (id: string, isDone: boolean , todoListId : string) => void
     filter: FilterValuesType
 }
 
@@ -34,7 +34,7 @@ export function Todolist(props: PropsType) {
     const onKeyPressHandler = (event: any) => {
         //тут не должен стоять тип any (надо потом исправить)
         if (event.code === 'Enter') {
-            props.addTask(newTaskTitle)
+            props.addTask(newTaskTitle , props.id)
             setNewTaskTitle('') //очищаем инпут
         }
     }
@@ -46,7 +46,7 @@ export function Todolist(props: PropsType) {
             setError("это поле обязательно")
             return
         }
-        props.addTask(newTaskTitle.trim())
+        props.addTask(newTaskTitle.trim() , props.id)
         setNewTaskTitle('') //очищаем инпут
     }
     const onAllClickHandler = () => {
@@ -77,10 +77,10 @@ export function Todolist(props: PropsType) {
                     // отрисовываем каждый жлемент этого массива
                     props.tasks.map((task) => {
                         const onDeleteHandler = () => {
-                            props.deleteTask(task.id)
+                            props.deleteTask(task.id , props.id)
                         }//функция которая удаляет дело
                         const onChangeCheckBoxHandler = (event: ChangeEvent<HTMLInputElement>) => {
-                            props.changeCheckBoxStatus(task.id, event.target.checked)
+                            props.changeCheckBoxStatus(task.id, event.target.checked , props.id)
                         }//функция которая менеят статус чекбокса
 
                         return (
