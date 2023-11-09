@@ -47,7 +47,6 @@ function App() {
         tasks = filteredTasks
         setTasks({...tasksObj})//отдаем копию обьекта иначе реакт ничего не перерисовывает
     }
-
     const changeCheckBoxStatus = (taskId: string, isDone: boolean , todoListId : string) => {
         let tasks = tasksObj[todoListId] // достаем все дела конкретного тудулиста (обратимся к нему поо айди)
 
@@ -59,6 +58,11 @@ function App() {
             setTasks({...tasksObj}) //отрисовываем новый массив
         }
 
+    }
+    const deleteTodoList = (todoListId : string ) => {
+        // создаем новый массив без того туду листа id котрого мы передали
+        let filteredTodoLists = todoLists.filter( todolist => todolist.id != todoListId)
+        setTodoLists(filteredTodoLists)
     }
 
     let todoListId1 = v1()
@@ -108,6 +112,7 @@ function App() {
                             addTask={addTask} // передаем фунцкию которая добавляет новое дело
                             changeCheckBoxStatus={changeCheckBoxStatus} //передаем фунцкию которая которая меняет статус чекбокса
                             filter={todoList.filter}
+                            deleteTodoList={deleteTodoList}
                         />
                     )
                 })
