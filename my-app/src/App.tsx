@@ -62,7 +62,10 @@ function App() {
     const deleteTodoList = (todoListId : string ) => {
         // создаем новый массив без того туду листа id котрого мы передали
         let filteredTodoLists = todoLists.filter( todolist => todolist.id != todoListId)
-        setTodoLists(filteredTodoLists)
+        setTodoLists(filteredTodoLists)//перерисовка
+
+        delete tasksObj[todoListId] //удаляем все дела с таким id
+        setTasks({...tasksObj})
     }
 
     let todoListId1 = v1()
