@@ -47,6 +47,7 @@ export function Todolist(props: PropsType) {
             setError("это поле обязательно")
             return
         }
+
         props.addTask(newTaskTitle.trim() , props.id)
         setNewTaskTitle('') //очищаем инпут
     }

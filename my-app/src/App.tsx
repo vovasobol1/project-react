@@ -35,7 +35,7 @@ function App() {
 
         let newTasks: Array<TaskType> = [newTask, ...tasks] //новый массив всех дел с новым делом
 
-        tasks = newTasks
+        tasksObj[todoListId] = newTasks
         setTasks({...tasksObj}) //отрисовываем новый обьект
     }
 
