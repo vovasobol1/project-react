@@ -56,7 +56,6 @@ function App() {
         //если нашлось дело с таким id и там не лежит undefined тогда менеям на противоположное
         if (foundTask !== undefined) {
             foundTask.isDone = isDone //менеям на значение которое пришло в параметр функции
-            tasks = []
             setTasks({...tasksObj}) //отрисовываем новый массив
         }
 
