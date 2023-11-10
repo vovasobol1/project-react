@@ -22,7 +22,6 @@ function App() {
             setTodoLists([...todoLists])
         }
     }
-
     function addTask(title: string , todoListId : string) {
         let tasks = tasksObj[todoListId] // достаем все дела конкретного тудулиста (обратимся к нему поо айди)
 
@@ -38,7 +37,6 @@ function App() {
         tasksObj[todoListId] = newTasks
         setTasks({...tasksObj}) //отрисовываем новый обьект
     }
-
     function deleteTask(id: string , todoListId : string ) {
         let tasks = tasksObj[todoListId] // достаем все дела конкретного тудулиста (обратимся к нему поо айди)
 
@@ -75,7 +73,6 @@ function App() {
         {id: todoListId1, title: "what to learn", filter: 'active'},
         {id: todoListId2, title: "films", filter: 'all'},
     ])
-
     const [tasksObj, setTasks] = useState({
         [todoListId1]:[
             {id:v1() , title:'js' , isDone:true} ,
@@ -90,8 +87,10 @@ function App() {
         ]
 
     })
+
     return (
         <div className="App">
+            <input/><button>+</button>
             {
 
                 todoLists.map(todoList => {
