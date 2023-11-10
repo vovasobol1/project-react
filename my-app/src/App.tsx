@@ -15,6 +15,7 @@ type TasksStateType = {
 }
 
 function App() {
+
     function changeFilter(value: FilterValuesType, todoListId: string) {
         //функция которая будет менять фильтр
 
@@ -26,7 +27,6 @@ function App() {
             setTodoLists([...todoLists])
         }
     }
-
     function addTask(title: string, todoListId: string) {
         let tasks = tasksObj[todoListId] // достаем все дела конкретного тудулиста (обратимся к нему поо айди)
 
@@ -42,7 +42,6 @@ function App() {
         tasksObj[todoListId] = newTasks
         setTasks({...tasksObj}) //отрисовываем новый обьект
     }
-
     function deleteTask(id: string, todoListId: string) {
         let tasks = tasksObj[todoListId] // достаем все дела конкретного тудулиста (обратимся к нему поо айди)
 
@@ -51,7 +50,6 @@ function App() {
         tasks = filteredTasks
         setTasks({...tasksObj})//отдаем копию обьекта иначе реакт ничего не перерисовывает
     }
-
     const changeCheckBoxStatus = (taskId: string, isDone: boolean, todoListId: string) => {
         let tasks = tasksObj[todoListId] // достаем все дела конкретного тудулиста (обратимся к нему поо айди)
 
@@ -87,6 +85,20 @@ function App() {
 
         setTodoLists([newTodolist , ...todoLists])
     }
+    const changeTaskTitle =(taskId : string , newTitle : string , todoListId : string ) =>{
+        //достаем нужный массив который будем менять
+        let tasks = tasksObj[todoListId]
+
+        //найдем нужную таску по taskId
+        let findetTask = tasks.find(task => task.id === taskId)
+        //если таска нашлась меняем в ней тайтл
+        if (findetTask) {
+            findetTask.title = newTitle
+            //сетаем стейт чтобы все отрисовалось снова
+            setTasks({...tasksObj})
+        }
+
+    }
 
     let todoListId1 = v1()
     let todoListId2 = v1()
@@ -109,7 +121,6 @@ function App() {
         ]
 
     })
-
 
     return (
         <div className="App">
@@ -138,6 +149,7 @@ function App() {
                             changeCheckBoxStatus={changeCheckBoxStatus} //передаем фунцкию которая которая меняет статус чекбокса
                             filter={todoList.filter}
                             deleteTodoList={deleteTodoList}
+                            changeTaskTitle={changeTaskTitle}
                         />
                     )
                 })
