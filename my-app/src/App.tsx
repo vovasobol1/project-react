@@ -45,9 +45,8 @@ function App() {
     function deleteTask(id: string, todoListId: string) {
         let tasks = tasksObj[todoListId] // достаем все дела конкретного тудулиста (обратимся к нему поо айди)
 
-
         let filteredTasks = tasks.filter(task => id !== task.id)// если это не то дело которое нужно удалить то вернется true и оно не удалится
-        tasks = filteredTasks
+        tasksObj[todoListId] = filteredTasks
         setTasks({...tasksObj})//отдаем копию обьекта иначе реакт ничего не перерисовывает
     }
     const changeCheckBoxStatus = (taskId: string, isDone: boolean, todoListId: string) => {
