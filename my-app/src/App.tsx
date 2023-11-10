@@ -10,6 +10,9 @@ type todoListType = {
     title: string
     filter: FilterValuesType
 }
+type TasksStateType = {
+    [key:string] : Array<TaskType>
+}
 
 function App() {
     function changeFilter(value: FilterValuesType, todoListId: string) {
@@ -92,7 +95,7 @@ function App() {
         {id: todoListId1, title: "what to learn", filter: 'all'},
         {id: todoListId2, title: "films", filter: 'all'},
     ])
-    const [tasksObj, setTasks] = useState({
+    const [tasksObj, setTasks] = useState<TasksStateType>({
         [todoListId1]: [
             {id: v1(), title: 'js', isDone: true},
             {id: v1(), title: 'html', isDone: true},
