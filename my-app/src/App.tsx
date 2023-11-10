@@ -99,6 +99,18 @@ function App() {
         }
 
     }
+    const changeTodoListTitle = (todolistId : string , newTitle : string ) => {
+        //назодим тудулист в котором будет изменен title
+        const findetTodoList = todoLists.find(todolist => todolist.id === todolistId)
+
+        //если что то нашлось
+        if (findetTodoList) {
+            findetTodoList.title = newTitle
+            setTodoLists([...todoLists])
+        }
+
+
+    }
 
     let todoListId1 = v1()
     let todoListId2 = v1()
@@ -150,6 +162,7 @@ function App() {
                             filter={todoList.filter}
                             deleteTodoList={deleteTodoList}
                             changeTaskTitle={changeTaskTitle}
+                            changeTodoListTitle={changeTodoListTitle}
                         />
                     )
                 })
