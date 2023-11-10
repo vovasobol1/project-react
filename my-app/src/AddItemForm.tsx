@@ -1,8 +1,7 @@
 import React, {ChangeEvent, useState} from "react";
 
 type AddItemFormPropsType = {
-    addTask: (taskTitle: string, todoListId: string) => void
-    id: string
+    addItem: (taskTitle: string) => void
 }
 
 export function AddItemForm(props: AddItemFormPropsType) {
@@ -18,7 +17,7 @@ export function AddItemForm(props: AddItemFormPropsType) {
     const onKeyPressHandler = (event: any) => {
         //тут не должен стоять тип any (надо потом исправить)
         if (event.code === 'Enter') {
-            props.addTask(newTaskTitle, props.id)
+            props.addItem(newTaskTitle)
             setNewTaskTitle('') //очищаем инпут
         }
     }
@@ -31,7 +30,7 @@ export function AddItemForm(props: AddItemFormPropsType) {
             return
         }
 
-        props.addTask(newTaskTitle.trim(), props.id)
+        props.addItem(newTaskTitle.trim())
         setNewTaskTitle('') //очищаем инпут
     }
 

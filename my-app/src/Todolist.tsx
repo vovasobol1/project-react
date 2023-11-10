@@ -35,13 +35,15 @@ export function Todolist(props: PropsType) {
     const deleteTodoListHandler = () => {
         props.deleteTodoList(props.id)
     }
-
+    const addTask = (title : string) =>{
+        props.addTask(title , props.id)
+    }
     return (
         <div>
             <h3>{props.title}
                 <button onClick={deleteTodoListHandler}>X</button>
             </h3>
-            <AddItemForm addTask={props.addTask} id={props.id} />
+            <AddItemForm addItem={addTask}  />
             <ul>
                 {
                     // в пропсах приходит массив обьектов props.tasks (в нем лежат все дела ) с помощью map
