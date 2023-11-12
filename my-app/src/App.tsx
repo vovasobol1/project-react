@@ -3,6 +3,22 @@ import './App.css';
 import {TaskType, Todolist} from "./Todolist";
 import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
+import {
+    Accordion, AccordionDetails,
+    AccordionSummary,
+    AppBar,
+    Box,
+    Button,
+    Container,
+    Grid,
+    IconButton,
+    Paper,
+    Toolbar,
+    Typography
+} from "@mui/material";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+import MenuIcon from '@mui/icons-material/Menu';
 
 export type FilterValuesType = 'all' | 'completed' | 'active'  //тип значений для фильтрации чтобы в качестве фильтра не была любая строка
 type todoListType = {
@@ -11,7 +27,7 @@ type todoListType = {
     filter: FilterValuesType
 }
 type TasksStateType = {
-    [key:string] : Array<TaskType>
+    [key: string]: Array<TaskType>
 }
 
 function App() {
@@ -69,22 +85,22 @@ function App() {
         delete tasksObj[todoListId] //удаляем все дела с таким id
         setTasks({...tasksObj})
     }
-    const addTodoList = (title : string ) =>{
+    const addTodoList = (title: string) => {
         //новый тудулист
-        let newTodolist:todoListType = {
+        let newTodolist: todoListType = {
             id: v1(),
-            filter:'all',
-            title:title
+            filter: 'all',
+            title: title
         }
         //отправлем пустой массив в массив дел
         setTasks({
             ...tasksObj,
-            [newTodolist.id] : []
+            [newTodolist.id]: []
         })
 
-        setTodoLists([newTodolist , ...todoLists])
+        setTodoLists([newTodolist, ...todoLists])
     }
-    const changeTaskTitle =(taskId : string , newTitle : string , todoListId : string ) =>{
+    const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
         //достаем нужный массив который будем менять
         let tasks = tasksObj[todoListId]
 
@@ -98,7 +114,7 @@ function App() {
         }
 
     }
-    const changeTodoListTitle = (todolistId : string , newTitle : string ) => {
+    const changeTodoListTitle = (todolistId: string, newTitle: string) => {
         //назодим тудулист в котором будет изменен title
         const findetTodoList = todoLists.find(todolist => todolist.id === todolistId)
 
@@ -116,57 +132,67 @@ function App() {
 
     const [todoLists, setTodoLists] = useState<Array<todoListType>>([
         {id: todoListId1, title: "what to learn", filter: 'all'},
-        {id: todoListId2, title: "films", filter: 'all'},
+        {id: todoListId2, title: "продукты", filter: 'all'},
     ])
     const [tasksObj, setTasks] = useState<TasksStateType>({
         [todoListId1]: [
             {id: v1(), title: 'js', isDone: true},
             {id: v1(), title: 'html', isDone: true},
-            {id: v1(), title: 'vscode', isDone: true},
+            {id: v1(), title: 'vscode', isDone: false},
             {id: v1(), title: 'react', isDone: false}
         ],
         [todoListId2]: [
-            {id: v1(), title: 'астрал', isDone: true},
-            {id: v1(), title: 'оно', isDone: true},
-            {id: v1(), title: 'терминатор', isDone: false}
+            {id: v1(), title: 'молоко', isDone: true},
+            {id: v1(), title: 'сыр', isDone: true},
+            {id: v1(), title: 'хлеб', isDone: false}
         ]
 
     })
 
     return (
         <div className="App">
-            <AddItemForm addItem={addTodoList} />
 
-            {
-                todoLists.map(todoList => {
-                    //тут происходит фильтрация
-                    let TasksForTodolist = tasksObj[todoList.id]
+            <Container fixed>
+                <Grid container style={ {padding : "20px"} }>
+                    <AddItemForm addItem={addTodoList}/>
+                </Grid>
+                <Grid container spacing={3}>
+                    {
+                        todoLists.map(todoList => {
+                            //тут происходит фильтрация
+                            let TasksForTodolist = tasksObj[todoList.id]
 
-                    if (todoList.filter === 'completed') {
-                        TasksForTodolist = TasksForTodolist.filter(task => task.isDone === true)
+                            if (todoList.filter === 'completed') {
+                                TasksForTodolist = TasksForTodolist.filter(task => task.isDone === true)
+                            }
+                            if (todoList.filter === 'active') {
+                                TasksForTodolist = TasksForTodolist.filter(task => task.isDone === false)
+                            }
+                            return (
+
+                                <Grid item>
+                                    <Paper elevation={3} style={ {padding : "10px"} }>
+                                        <Todolist
+                                            key={todoList.id}
+                                            id={todoList.id}
+                                            title={todoList.title} //передаем заголовок туду листа
+                                            tasks={TasksForTodolist}         //передаем массив дел
+                                            deleteTask={deleteTask} //передаем функцию удаления одного дела
+                                            changeFilter={changeFilter} //передаем функцию которая менеят фильтры
+                                            addTask={addTask} // передаем фунцкию которая добавляет новое дело
+                                            changeCheckBoxStatus={changeCheckBoxStatus} //передаем фунцкию которая которая меняет статус чекбокса
+                                            filter={todoList.filter}
+                                            deleteTodoList={deleteTodoList}
+                                            changeTaskTitle={changeTaskTitle}
+                                            changeTodoListTitle={changeTodoListTitle}
+                                        />
+                                    </Paper>
+                                </Grid>
+                            )
+                        })
                     }
-                    if (todoList.filter === 'active') {
-                        TasksForTodolist = TasksForTodolist.filter(task => task.isDone === false)
-                    }
-                    return (
-                        <Todolist
-                            key={todoList.id}
-                            id={todoList.id}
-                            title={todoList.title} //передаем заголовок туду листа
-                            tasks={TasksForTodolist}         //передаем массив дел
-                            deleteTask={deleteTask} //передаем функцию удаления одного дела
-                            changeFilter={changeFilter} //передаем функцию которая менеят фильтры
-                            addTask={addTask} // передаем фунцкию которая добавляет новое дело
-                            changeCheckBoxStatus={changeCheckBoxStatus} //передаем фунцкию которая которая меняет статус чекбокса
-                            filter={todoList.filter}
-                            deleteTodoList={deleteTodoList}
-                            changeTaskTitle={changeTaskTitle}
-                            changeTodoListTitle={changeTodoListTitle}
-                        />
-                    )
-                })
-
-            }
+                </Grid>
+            </Container>
         </div>
     );
 }

@@ -1,4 +1,7 @@
 import React, {ChangeEvent, useState} from "react";
+import {IconButton, TextField} from "@mui/material";
+import {Delete} from "@mui/icons-material";
+import AddIcon from '@mui/icons-material/Add';
 
 type AddItemFormPropsType = {
     addItem: (taskTitle: string) => void
@@ -15,6 +18,13 @@ export function AddItemForm(props: AddItemFormPropsType) {
         setNewTaskTitle(event.currentTarget.value)
     }
     const onKeyPressHandler = (event: any) => {
+        if (newTaskTitle.trim() === '') {
+            //если мы пытаемся добавить дело которое состоит из пустой строки то будет выход из фкнцкии
+            //.trim() обрежет все пробелы потому если этого не сделать пользователь может напечатать много пробелов
+            // и выхода из функции не будет
+            setError("это поле обязательно")
+            return
+        }
         //тут не должен стоять тип any (надо потом исправить)
         if (event.code === 'Enter') {
             props.addItem(newTaskTitle)
@@ -35,16 +45,16 @@ export function AddItemForm(props: AddItemFormPropsType) {
     }
 
     return (
-
         <div>
-            <input value={newTaskTitle}
+            <TextField label="type value" value={newTaskTitle}
                    onChange={onChangeHandler}
                    onKeyPress={onKeyPressHandler}
-                   className={error ? "error" : ""} //если в error не пустая строка то присвоится класс ошибка
+                   error={!!error}//если в error не пустая строка то присвоится класс ошибка
             />
-            <button onClick={addTask}>+</button>
+            <IconButton onClick={addTask} >
+                <AddIcon fontSize={'large'}/>
+            </IconButton>
             {error && <div className={'error-massage'}>{error}</div>}
         </div>
-
     )
 }
