@@ -7,7 +7,7 @@ import {Container, Grid, Paper} from "@mui/material";
 import {AppBarComponent} from "./AppBarComponent";
 
 export type FilterValuesType = 'all' | 'completed' | 'active'  //тип значений для фильтрации чтобы в качестве фильтра не была любая строка
-type todoListType = {
+export type todoListType = {
     id: string
     title: string
     filter: FilterValuesType
@@ -18,6 +18,30 @@ type TasksStateType = {
 
 function App() {
 
+    //функции которые делают изменения в тудулисте
+    const addTodoList = (title: string) => {
+        //новый тудулист
+        let newTodolist: todoListType = {
+            id: v1(),
+            filter: 'all',
+            title: title
+        }
+        //отправлем пустой массив в массив дел
+        setTasks({
+            ...tasksObj,
+            [newTodolist.id]: []
+        })
+
+        setTodoLists([newTodolist, ...todoLists])
+    }
+    const deleteTodoList = (todoListId: string) => {
+        // создаем новый массив без того туду листа id котрого мы передали
+        let filteredTodoLists = todoLists.filter(todolist => todolist.id != todoListId)
+        setTodoLists(filteredTodoLists)//перерисовка
+
+        delete tasksObj[todoListId] //удаляем все дела с таким id
+        setTasks({...tasksObj})
+    }
     function changeFilter(value: FilterValuesType, todoListId: string) {
         //функция которая будет менять фильтр
 
@@ -44,6 +68,7 @@ function App() {
         tasksObj[todoListId] = newTasks
         setTasks({...tasksObj}) //отрисовываем новый обьект
     }
+
     function deleteTask(id: string, todoListId: string) {
         let tasks = tasksObj[todoListId] // достаем все дела конкретного тудулиста (обратимся к нему поо айди)
 
@@ -63,29 +88,7 @@ function App() {
         }
 
     }
-    const deleteTodoList = (todoListId: string) => {
-        // создаем новый массив без того туду листа id котрого мы передали
-        let filteredTodoLists = todoLists.filter(todolist => todolist.id != todoListId)
-        setTodoLists(filteredTodoLists)//перерисовка
 
-        delete tasksObj[todoListId] //удаляем все дела с таким id
-        setTasks({...tasksObj})
-    }
-    const addTodoList = (title: string) => {
-        //новый тудулист
-        let newTodolist: todoListType = {
-            id: v1(),
-            filter: 'all',
-            title: title
-        }
-        //отправлем пустой массив в массив дел
-        setTasks({
-            ...tasksObj,
-            [newTodolist.id]: []
-        })
-
-        setTodoLists([newTodolist, ...todoLists])
-    }
     const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
         //достаем нужный массив который будем менять
         let tasks = tasksObj[todoListId]
@@ -118,7 +121,7 @@ function App() {
 
     const [todoLists, setTodoLists] = useState<Array<todoListType>>([
         {id: todoListId1, title: "what to learn", filter: 'all'},
-        {id: todoListId2, title: "продукты", filter: 'all'},
+        {id: todoListId2, title: "продукты", filter: 'all'}
     ])
     const [tasksObj, setTasks] = useState<TasksStateType>({
         [todoListId1]: [
