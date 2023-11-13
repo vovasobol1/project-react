@@ -3,22 +3,8 @@ import './App.css';
 import {TaskType, Todolist} from "./Todolist";
 import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
-import {
-    Accordion, AccordionDetails,
-    AccordionSummary,
-    AppBar,
-    Box,
-    Button,
-    Container,
-    Grid,
-    IconButton,
-    Paper,
-    Toolbar,
-    Typography
-} from "@mui/material";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-import MenuIcon from '@mui/icons-material/Menu';
+import {Container, Grid, Paper} from "@mui/material";
+import {AppBarComponent} from "./AppBarComponent";
 
 export type FilterValuesType = 'all' | 'completed' | 'active'  //тип значений для фильтрации чтобы в качестве фильтра не была любая строка
 type todoListType = {
@@ -150,8 +136,8 @@ function App() {
     })
 
     return (
-        <div className="App">
-
+        <div className="">
+            <AppBarComponent/>
             <Container fixed>
                 <Grid container style={ {padding : "20px"} }>
                     <AddItemForm addItem={addTodoList}/>
@@ -196,5 +182,7 @@ function App() {
         </div>
     );
 }
+
+
 
 export default App;

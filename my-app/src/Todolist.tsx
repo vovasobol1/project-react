@@ -2,7 +2,7 @@ import React, {ChangeEvent} from "react";
 import {FilterValuesType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
-import {Button, Checkbox, IconButton} from "@mui/material";
+import {BottomNavigation, BottomNavigationAction, Button, ButtonGroup, Checkbox, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 
 
@@ -81,7 +81,7 @@ export function Todolist(props: PropsType) {
                     })
                 }
             </div>
-            <div>
+            <ButtonGroup>
                 <Button variant={props.filter === "all" ? "contained" : "outlined"}
                         onClick={onAllClickHandler}>all
                 </Button>
@@ -91,7 +91,7 @@ export function Todolist(props: PropsType) {
                 <Button color={'secondary'} variant={props.filter === "completed" ? "contained" : "outlined"}
                         onClick={onCompletedHandler}>completed
                 </Button>
-            </div>
+            </ButtonGroup>
         </div>
     )
 }
