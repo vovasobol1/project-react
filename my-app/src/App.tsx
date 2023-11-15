@@ -12,9 +12,11 @@ export type todoListType = {
     title: string
     filter: FilterValuesType
 }
-type TasksStateType = {
+export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
+
+
 
 function App() {
 
@@ -53,6 +55,20 @@ function App() {
             setTodoLists([...todoLists])
         }
     }
+    const changeTodoListTitle = (todolistId: string, newTitle: string) => {
+        //назодим тудулист в котором будет изменен title
+        const findetTodoList = todoLists.find(todolist => todolist.id === todolistId)
+
+        //если что то нашлось
+        if (findetTodoList) {
+            findetTodoList.title = newTitle
+            setTodoLists([...todoLists])
+        }
+
+
+    }
+
+    //функции отвечающие за изменение тасок снутри тудулистов
     function addTask(title: string, todoListId: string) {
         let tasks = tasksObj[todoListId] // достаем все дела конкретного тудулиста (обратимся к нему поо айди)
 
@@ -68,7 +84,6 @@ function App() {
         tasksObj[todoListId] = newTasks
         setTasks({...tasksObj}) //отрисовываем новый обьект
     }
-
     function deleteTask(id: string, todoListId: string) {
         let tasks = tasksObj[todoListId] // достаем все дела конкретного тудулиста (обратимся к нему поо айди)
 
@@ -88,7 +103,6 @@ function App() {
         }
 
     }
-
     const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
         //достаем нужный массив который будем менять
         let tasks = tasksObj[todoListId]
@@ -103,18 +117,8 @@ function App() {
         }
 
     }
-    const changeTodoListTitle = (todolistId: string, newTitle: string) => {
-        //назодим тудулист в котором будет изменен title
-        const findetTodoList = todoLists.find(todolist => todolist.id === todolistId)
-
-        //если что то нашлось
-        if (findetTodoList) {
-            findetTodoList.title = newTitle
-            setTodoLists([...todoLists])
-        }
 
 
-    }
 
     let todoListId1 = v1()
     let todoListId2 = v1()

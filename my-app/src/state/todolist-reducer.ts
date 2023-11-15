@@ -23,6 +23,7 @@ export type ChangeTodoListFilterActionType = {
     newFilter : FilterValuesType
 }
 
+
 type ActionsType = DeleteTodoListActionType | AddTodoListActionType | ChangeTodoListTitleActionType | ChangeTodoListFilterActionType
 
 export const todoListsReducer = (state :Array<todoListType> , action : ActionsType):Array<todoListType>=>{
