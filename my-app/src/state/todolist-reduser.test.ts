@@ -2,12 +2,12 @@ import {userReducer} from "./user-reduser";
 import {v1} from "uuid";
 import {FilterValuesType, todoListType} from "../App";
 import {
-    AddTodoListAC,
     AddTodoListActionType, ChangeTodoListFilterAC, ChangeTodoListFilterActionType, ChangeTodoListTitleAC,
     ChangeTodoListTitleActionType, DeleteTodoListAC,
     DeleteTodoListActionType,
     todoListsReducer
 } from "./todolist-reducer";
+import {addTodoListAC} from "./tasks-reducer";
 
 test('проверка на то что тудулист можно удалить' , ()=>{
     let todoListId1 = v1()
@@ -25,7 +25,7 @@ test('проверка на то что тудулист можно удалит
     expect(endState[0].id).toBe(todoListId2)  //первый элемент имеет id todoListId2
 });
 
-test('проверка на то у тудулиста можно добавить новый тудулист' , ()=>{
+test('проверка на то можно добавить новый тудулист' , ()=>{
     let todoListId1 = v1()
     let todoListId2 = v1()
 
@@ -36,7 +36,9 @@ test('проверка на то у тудулиста можно добавит
         {id: todoListId2, title: "продукты", filter: 'all'}
     ]
 
-    const endState: Array<todoListType> = todoListsReducer(startState ,AddTodoListAC(newTodoListTitle))
+    let action = addTodoListAC(newTodoListTitle)
+
+    const endState: Array<todoListType> = todoListsReducer(startState ,action)
 
     expect(endState.length).toBe(3)  //длина массива должна быть 3
     expect(endState[2].title).toBe(newTodoListTitle)  //3 элеметт имеет тайтл newTodoListTitle
